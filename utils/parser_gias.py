@@ -99,12 +99,18 @@ class FindProcedures():
                 "input.ant-calendar-input[placeholder*= 'Конечная дата']"
                 )
 
-            # Очистить поле конечной даты (если требуется)
+            # Очистить поле конечной даты
             end_date_field.clear()
 
             # Ввести значение конечной даты
             end_date_field.send_keys(self.date_end)
             end_date_field.send_keys(Keys.RETURN)
+
+            # button = self.driver.find_element(
+            #     By.CLASS_NAME,
+            #     "ant-calendar-ok-btn" # Ok"
+            # )
+            # button.click()
 
         except Exception as error:
             print("Ошибка при задании дат в календаре: ", type(error), error)
@@ -255,9 +261,17 @@ class FindProcedures():
         """
         Преобразуем строку в число
         """
-        number = re.sub(r'[^-\d,.]', '', text)
-        number = number.replace(',', '.')
-        return float(number)
+        if text:
+            number = re.sub(r'[^-\d,.]', '', text)
+            number = number.replace(',', '.')
+
+            try:
+                result = float(number)
+                return result
+            except Exception as error:
+                print("Ошибка: ", error, "text=", text)
+        else:
+            return 0
 
     @staticmethod
     def transform(text) -> str:
